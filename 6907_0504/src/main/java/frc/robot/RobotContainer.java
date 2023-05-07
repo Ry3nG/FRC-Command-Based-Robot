@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.ArcadeDriveCommand;
@@ -17,15 +17,15 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 
   // joystick
-  private final Joystick joystick1 = new Joystick(OIConstants.kDriverJoystickPort);
+  private final XboxController joystick1 = new XboxController(OIConstants.kDriverJoystickPort);
 
   public RobotContainer() {
     configureBindings();
 
     // DriveSubsystem
     driveSubsystem.setDefaultCommand(new ArcadeDriveCommand(driveSubsystem, //
-        () -> -joystick1.getRawAxis(OIConstants.kArcadeDriveSpeedAxis),
-        () -> joystick1.getRawAxis(OIConstants.kArcadeDriveTurnAxis))//
+        () -> joystick1.getRightX(),
+        () -> -joystick1.getLeftY())
     );
   }
 

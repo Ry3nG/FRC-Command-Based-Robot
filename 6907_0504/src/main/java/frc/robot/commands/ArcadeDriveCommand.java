@@ -25,10 +25,14 @@ public class ArcadeDriveCommand extends CommandBase{
     @Override
     public void execute(){
         double realTimeSPeed = speedFunction.get();
-        double realTimeTurn = turnFunction.get();
+        double realTimeTurn = turnFunction.get();        
 
         double leftMotorOutput = realTimeSPeed + realTimeTurn;
         double rightMotorOutput = realTimeSPeed - realTimeTurn;
+
+        // safety threhold, better revamp with motion profiling
+        leftMotorOutput = 0.3*leftMotorOutput*Math.abs(leftMotorOutput);
+        rightMotorOutput = 0.3*rightMotorOutput*Math.abs(rightMotorOutput);
 
         driveSubsystem.setMotorOutput(leftMotorOutput, rightMotorOutput);
     }
