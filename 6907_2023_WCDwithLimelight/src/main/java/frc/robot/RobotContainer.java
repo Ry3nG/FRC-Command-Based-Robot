@@ -7,9 +7,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveWithJoystickCmd;
-import frc.robot.commands.DriveWithLimelight;
+import frc.robot.commands.DriveWithLimelightCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
@@ -43,8 +44,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    JoystickButton autoButton = new JoystickButton(m_Controller, Constants.ControllerConstants.autoButton);
-    autoButton.whileTrue(new DriveWithLimelight(m_DrivetrainSubsystem, m_LimelightSubsystem));
+    new Trigger(m_Controller::getAButton)
+    .whileTrue(new RepeatCommand(new DriveWithLimelightCmd(m_DrivetrainSubsystem, m_LimelightSubsystem)));
   }
 
   public Command getAutonomousCommand() {
