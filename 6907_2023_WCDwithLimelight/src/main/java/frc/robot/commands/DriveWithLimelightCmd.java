@@ -5,11 +5,11 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
-public class DriveWithLimelight extends CommandBase {
+public class DriveWithLimelightCmd extends CommandBase {
     private final DrivetrainSubsystem m_DrivetrainSubsystem;
     private final LimelightSubsystem m_LimelightSubsystem;
 
-    public DriveWithLimelight(DrivetrainSubsystem drivetrainSubsystem, LimelightSubsystem limelightSubsystem) {
+    public DriveWithLimelightCmd(DrivetrainSubsystem drivetrainSubsystem, LimelightSubsystem limelightSubsystem) {
         m_DrivetrainSubsystem = drivetrainSubsystem;
         m_LimelightSubsystem = limelightSubsystem;
         addRequirements(m_DrivetrainSubsystem, m_LimelightSubsystem);
@@ -24,7 +24,7 @@ public class DriveWithLimelight extends CommandBase {
             forward = Constants.LimelightConstants.MAX_DRIVE;
         }
 
-        if(m_LimelightSubsystem.getTargetValidity() >= 1.0) {
+        if(m_LimelightSubsystem.getTargetValidity() >= Constants.LimelightConstants.TARGET_VALIDITY_THRESHOLD) {
             m_DrivetrainSubsystem.arcadeDrive(forward, rotation);
         } else {
             m_DrivetrainSubsystem.arcadeDrive(0, 0);
