@@ -30,8 +30,15 @@ public class RobotContainer {
     configureBindings();
 
     // Drivesubsystem
-    m_DrivetrainSubsystem.setDefaultCommand(new DriveWithJoystickCmd(m_DrivetrainSubsystem, m_Controller));
-       
+    m_DrivetrainSubsystem.setDefaultCommand(
+      // a split-stick arcade command, with forward/backward controlled by the left
+      // hand, and turning controlled by the right.
+      // The left hand Y axis controls the forward/backward speed
+      // The right hand X axis controls the rotation
+      // The left hand Y axis is multiplied by -1 because the joystick returns negative values when pushed forward, and positive values when pulled back
+      // The right hand X axis is multiplied by 0.75 because the rotation is too fast at full speed
+      new DriveWithJoystickCmd(m_DrivetrainSubsystem, () -> -m_Controller.getLeftY(), () -> m_Controller.getLeftX() * 0.75)
+    );
     
   }
 

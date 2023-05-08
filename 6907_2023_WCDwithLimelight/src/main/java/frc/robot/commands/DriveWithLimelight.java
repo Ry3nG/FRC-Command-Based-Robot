@@ -17,17 +17,17 @@ public class DriveWithLimelight extends CommandBase {
 
     @Override
     public void execute() {
-        double steer = m_LimelightSubsystem.getTargetX()*Constants.LimelightConstants.STEER_K;
-        double drive = (Constants.LimelightConstants.DESIRED_TARGET_AREA - m_LimelightSubsystem.getTargetArea()) * Constants.LimelightConstants.DRIVE_K;
+        double rotation = m_LimelightSubsystem.getTargetX()*Constants.LimelightConstants.STEER_K;
+        double forward = (Constants.LimelightConstants.DESIRED_TARGET_AREA - m_LimelightSubsystem.getTargetArea()) * Constants.LimelightConstants.DRIVE_K;
 
-        if(drive>Constants.LimelightConstants.MAX_DRIVE) {
-            drive = Constants.LimelightConstants.MAX_DRIVE;
+        if(forward>Constants.LimelightConstants.MAX_DRIVE) {
+            forward = Constants.LimelightConstants.MAX_DRIVE;
         }
 
         if(m_LimelightSubsystem.getTargetValidity() >= 1.0) {
-            m_DrivetrainSubsystem.setMotorOutput(drive+steer, drive-steer);
+            m_DrivetrainSubsystem.arcadeDrive(forward, rotation);
         } else {
-            m_DrivetrainSubsystem.setMotorOutput(0, 0);
+            m_DrivetrainSubsystem.arcadeDrive(0, 0);
         }
     }
 }

@@ -1,30 +1,26 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.Constants;
+
 
 public class DriveWithJoystickCmd extends CommandBase {
     private final DrivetrainSubsystem m_DrivetrainSubsystem;
-    private final XboxController m_Controller;
+    private final DoubleSupplier m_forward;
+    private final DoubleSupplier m_rotation;
 
-
-    public DriveWithJoystickCmd(DrivetrainSubsystem drivetrainSubsystem, XboxController controller) {
+    public DriveWithJoystickCmd(DrivetrainSubsystem drivetrainSubsystem, DoubleSupplier forward, DoubleSupplier rotation) {
         m_DrivetrainSubsystem = drivetrainSubsystem;
-        m_Controller = controller;
+        m_forward = forward;
+        m_rotation = rotation;
         addRequirements(m_DrivetrainSubsystem);
     }
 
     @Override
     public void execute() {
-        double drive = m_Controller.getRawAxis(Constants.ControllerConstants.leftJoystickYAxis);
-        double steer = -m_Controller.getRawAxis(Constants.ControllerConstants.rightJoystickXAxis);
-
-        double left = drive + steer;
-        double right = drive - steer;
-
-        m_DrivetrainSubsystem.setMotorOutput(left, right);
+        m_DrivetrainSubsystem.arcadeDrive(m_forward.getAsDouble(), m_rotation.getAsDouble()); 
     }
 
 }

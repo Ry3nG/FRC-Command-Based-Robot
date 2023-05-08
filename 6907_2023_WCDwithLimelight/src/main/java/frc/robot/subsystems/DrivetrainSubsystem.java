@@ -28,19 +28,23 @@ public class DrivetrainSubsystem extends SubsystemBase{
     }
 
     /*
-     * setMotorOutput() sets the output of the drivetrain motors
+     * arcadeDrive() is the method that drives the robot
      * 
-     * @param left the output of the left motors
-     * @param right the output of the right motors
+     * This method takes in two doubles, forward and rotation, and sets the motor outputs accordingly
      * 
-     * This method sets the output of the sparkmaxes and the victors to the same value
+     * The left motor output is the forward value plus the rotation value
+     * The right motor output is the forward value minus the rotation value
+     *
      */
-    public void setMotorOutput(double left, double right) {
-        driveMotorLeftMaster.set(left);
-        driveMotorRightMaster.set(right);
+    public void arcadeDrive(double forward, double rotation){
 
-        // manually set the victors to the same output as the sparkmaxes
-        driveMotorLeftVictor.set(left);
-        driveMotorRightVictor.set(right);
+        double leftMotorOutput = forward + rotation;
+        double rightMotorOutput = forward - rotation;
+
+        driveMotorLeftMaster.set(leftMotorOutput);
+        driveMotorRightMaster.set(rightMotorOutput);
+        driveMotorLeftVictor.set(leftMotorOutput);
+        driveMotorRightVictor.set(rightMotorOutput);
+
     }
 }
