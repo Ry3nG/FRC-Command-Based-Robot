@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveWithJoystickCmd;
+import frc.robot.commands.DriveWithJoystickPIDCmd;
 import frc.robot.commands.DriveWithLimelightCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -21,7 +22,6 @@ public class RobotContainer {
   private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
   private final XboxController m_Controller = new XboxController(Constants.ControllerConstants.driverController);
 
-
   /*
    * RobotContainer() is the constructor for the RobotContainer class
    * 
@@ -32,20 +32,18 @@ public class RobotContainer {
 
     // Drivesubsystem
     m_DrivetrainSubsystem.setDefaultCommand(
-      // a split-stick arcade command, with forward/backward controlled by the left
-      // hand, and turning controlled by the right.
-      // The left hand Y axis controls the forward/backward speed
-      // The right hand X axis controls the rotation
-      // The left hand Y axis is multiplied by -1 because the joystick returns negative values when pushed forward, and positive values when pulled back
-      // The right hand X axis is multiplied by 0.75 because the rotation is too fast at full speed
-      new DriveWithJoystickCmd(m_DrivetrainSubsystem, () -> -m_Controller.getLeftY(), () -> m_Controller.getLeftX() * 0.75)
-    );
-    
+        // a split-stick arcade command, with forward/backward controlled by the left
+        // hand, and turning controlled by the right.
+        // the library is somehow reversed so the left and right are inversed
+        new DriveWithJoystickCmd(m_DrivetrainSubsystem,
+        ()->-m_Controller.getLeftY(),
+        ()->m_Controller.getRightX()*0.75));
+
   }
 
   private void configureBindings() {
     new Trigger(m_Controller::getAButton)
-    .whileTrue(new RepeatCommand(new DriveWithLimelightCmd(m_DrivetrainSubsystem, m_LimelightSubsystem)));
+        .whileTrue(new RepeatCommand(new DriveWithLimelightCmd(m_DrivetrainSubsystem, m_LimelightSubsystem)));
   }
 
   public Command getAutonomousCommand() {

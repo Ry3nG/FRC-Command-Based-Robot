@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
-
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
@@ -16,6 +16,8 @@ public class DrivetrainSubsystem extends SubsystemBase{
     private final CANSparkMax driveMotorRightSlave = new CANSparkMax(Constants.DrivetrainConstants.driveMotorRightSlave, MotorType.kBrushless);
     private final Victor driveMotorRightVictor = new Victor(Constants.DrivetrainConstants.driveMotorRightVictor);
 
+    private final RelativeEncoder leftEncoder;
+    private final RelativeEncoder rightEncoder;
     /*
      * DrivetrainSubsystem() is the constructor for the DrivetrainSubsystem class
      * 
@@ -25,6 +27,19 @@ public class DrivetrainSubsystem extends SubsystemBase{
     public DrivetrainSubsystem() {
         driveMotorLeftSlave.follow(driveMotorLeftMaster);
         driveMotorRightSlave.follow(driveMotorRightMaster);
+
+        // Invert the right side motors
+        driveMotorRightMaster.setInverted(true);
+        driveMotorRightSlave.setInverted(true);
+        driveMotorRightVictor.setInverted(true);
+
+        leftEncoder = driveMotorLeftMaster.getEncoder();
+        rightEncoder = driveMotorRightMaster.getEncoder();
+
+        // Set the distance per pulse for the encoders here
+        // !TODO 
+        //... left undone...
+
     }
 
     /*
@@ -37,6 +52,8 @@ public class DrivetrainSubsystem extends SubsystemBase{
      *
      */
     public void arcadeDrive(double forward, double rotation){
+        forward = Math.max(-1.0, Math.min(forward,1.0));
+        rotation = Math.max(-1.0, Math.min(rotation,1.0));
 
         double leftMotorOutput = forward + rotation;
         double rightMotorOutput = forward - rotation;
@@ -47,4 +64,21 @@ public class DrivetrainSubsystem extends SubsystemBase{
         driveMotorRightVictor.set(rightMotorOutput);
 
     }
+
+    
+    public double getLeftEncoderPosition(){
+        return leftEncoder.getPosition();
+    }
+
+    public double getRightEncoderPosition(){
+        return -rightEncoder.getPosition();
+    }
+
+    public double getLeftEncoderVelocity(){
+        return leftEncoder.getVelocity();
+    }
+    public double getRightEncoderVelocity(){
+        return -rightEncoder.getVelocity();
+    }
+    
 }
