@@ -2,14 +2,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.DifferentialDrivetrainSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 public class DriveWithLimelightCmd extends CommandBase {
-    private final DrivetrainSubsystem m_DrivetrainSubsystem;
+    private final DifferentialDrivetrainSubsystem m_DrivetrainSubsystem;
     private final LimelightSubsystem m_LimelightSubsystem;
 
-    public DriveWithLimelightCmd(DrivetrainSubsystem drivetrainSubsystem, LimelightSubsystem limelightSubsystem) {
+    public DriveWithLimelightCmd(DifferentialDrivetrainSubsystem drivetrainSubsystem, LimelightSubsystem limelightSubsystem) {
         m_DrivetrainSubsystem = drivetrainSubsystem;
         m_LimelightSubsystem = limelightSubsystem;
         addRequirements(m_DrivetrainSubsystem, m_LimelightSubsystem);
@@ -17,7 +18,7 @@ public class DriveWithLimelightCmd extends CommandBase {
 
     @Override
     public void execute() {
-        double rotation = m_LimelightSubsystem.getTargetX()*Constants.LimelightConstants.STEER_K;
+        double rotation = -m_LimelightSubsystem.getTargetX()*Constants.LimelightConstants.STEER_K;
         double forward = (Constants.LimelightConstants.DESIRED_TARGET_AREA - m_LimelightSubsystem.getTargetArea()) * Constants.LimelightConstants.DRIVE_K;
 
         if(forward>Constants.LimelightConstants.MAX_DRIVE) {
