@@ -11,6 +11,10 @@ public class Constants {
         public static final int driveMotorRightVictor = 2;
     }
 
+    public static final class ElevatorConstants {
+        public static final int elevatorMotor = 18;
+    }
+
     public static final class ControllerConstants {
         public static final int driverController = 0;
         public static final int operatorController = 1;

@@ -10,15 +10,17 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveWithJoystickCmd;
-import frc.robot.commands.DriveWithJoystickPIDCmd;
 import frc.robot.commands.DriveWithLimelightCmd;
+import frc.robot.commands.ElevatorWithJoystickCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_DrivetrainSubsystem = new DrivetrainSubsystem();
+  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
   private final LimelightSubsystem m_LimelightSubsystem = new LimelightSubsystem();
   private final XboxController m_Controller = new XboxController(Constants.ControllerConstants.driverController);
 
@@ -39,6 +41,9 @@ public class RobotContainer {
         ()->-m_Controller.getLeftY(),
         ()->m_Controller.getRightX()*0.75));
 
+    m_ElevatorSubsystem.setDefaultCommand(
+      new ElevatorWithJoystickCmd(m_ElevatorSubsystem,
+      ()->m_Controller.getBButton()?1.15:0.05));
   }
 
   private void configureBindings() {
